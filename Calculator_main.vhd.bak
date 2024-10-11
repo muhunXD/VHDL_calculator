@@ -15,7 +15,7 @@ entity cclt is
     seven_seg_digit_1, seven_seg_digit_2,
     seven_seg_digit_3, seven_seg_digit_4,
     seven_seg_digit_5, seven_seg_digit_6 : out STD_LOGIC_VECTOR (6 downto 0);
-    led_done           : out std_logic := '0'
+    led_done           : out std_logic := 0;
     );
 
 end cclt;
@@ -133,16 +133,12 @@ begin
     when s6
      case Data_mode is
       when "00" =>
-			
       
       when "01" =>
       
+      when "10" =>
       
-		when "10" =>
-      
-      
-		when "11" =>  --Addition
-			done <= '1';
+      when "11" =>
      
      
      end case;

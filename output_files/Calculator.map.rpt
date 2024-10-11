@@ -1,5 +1,5 @@
 Analysis & Synthesis report for Calculator
-Fri Oct 11 20:51:48 2024
+Fri Oct 11 22:48:43 2024
 Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 
 
@@ -37,7 +37,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Failed - Fri Oct 11 20:51:48 2024           ;
+; Analysis & Synthesis Status        ; Failed - Fri Oct 11 22:48:43 2024           ;
 ; Quartus Prime Version              ; 20.1.1 Build 720 11/11/2020 SJ Lite Edition ;
 ; Revision Name                      ; Calculator                                  ;
 ; Top-level Entity Name              ; Calculator                                  ;
@@ -164,19 +164,17 @@ https://fpgasoftware.intel.com/eula.
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
-    Info: Processing started: Fri Oct 11 20:51:41 2024
+    Info: Processing started: Fri Oct 11 22:48:37 2024
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off Calculator -c Calculator
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 8 of the 8 processors detected
-Error (10500): VHDL syntax error at Calculator_main.vhd(19) near text ")";  expecting an identifier, or "constant", or "file", or "signal", or "variable" File: C:/My files/Study Stuff/Cpre 201/VHDL_calculator/Calculator_main.vhd Line: 19
-Error (10500): VHDL syntax error at Calculator_main.vhd(25) near text ")";  expecting ":", or "," File: C:/My files/Study Stuff/Cpre 201/VHDL_calculator/Calculator_main.vhd Line: 25
-Error (10500): VHDL syntax error at Calculator_main.vhd(51) near text "begin";  expecting an identifier ("begin" is a reserved keyword), or "constant", or "file", or "signal", or "variable" File: C:/My files/Study Stuff/Cpre 201/VHDL_calculator/Calculator_main.vhd Line: 51
-Error (10500): VHDL syntax error at Calculator_main.vhd(53) near text ")";  expecting ":", or "," File: C:/My files/Study Stuff/Cpre 201/VHDL_calculator/Calculator_main.vhd Line: 53
+Error (10500): VHDL syntax error at Calculator_main.vhd(134) near text "case";  expecting "!", or "=>" File: C:/My files/Study Stuff/Cpre 201/VHDL_calculator/Calculator_main.vhd Line: 134
+Error (10500): VHDL syntax error at Calculator_main.vhd(149) near text "case";  expecting "if" File: C:/My files/Study Stuff/Cpre 201/VHDL_calculator/Calculator_main.vhd Line: 149
 Info (12021): Found 0 design units, including 0 entities, in source file calculator_main.vhd
-Error: Quartus Prime Analysis & Synthesis was unsuccessful. 4 errors, 1 warning
-    Error: Peak virtual memory: 4768 megabytes
-    Error: Processing ended: Fri Oct 11 20:51:48 2024
-    Error: Elapsed time: 00:00:07
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 2 errors, 1 warning
+    Error: Peak virtual memory: 4779 megabytes
+    Error: Processing ended: Fri Oct 11 22:48:43 2024
+    Error: Elapsed time: 00:00:06
     Error: Total CPU time (on all processors): 00:00:03
 
 
