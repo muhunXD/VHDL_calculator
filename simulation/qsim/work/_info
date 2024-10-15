@@ -1,0 +1,154 @@
+m255
+K4
+z2
+!s11e vcom 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dD:/Documents/Quartus_files/VHDL_calculator/simulation/qsim
+Ecalculator
+Z1 w1728989301
+Z2 DPx11 fiftyfivenm 21 fiftyfivenm_atom_pack 0 22 OTUTkBjTeYVegmIWhVi3N0
+Z3 DPx11 fiftyfivenm 22 fiftyfivenm_components 0 22 C5K^h=:j[4HI?HO^UkN3:2
+Z4 DPx4 ieee 16 vital_primitives 0 22 G>kiXP8Q9dRClKfK1Zn7j1
+Z5 DPx6 altera 11 dffeas_pack 0 22 dc5N=DKXMMTVYdUQ@D3FA2
+Z6 DPx4 ieee 12 vital_timing 0 22 J>EBealN09f8GzldA[z2>3
+Z7 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z8 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+Z9 DPx6 altera 28 altera_primitives_components 0 22 ca:ehlQAg4;_gVV:^8MAg3
+!i122 118
+R0
+Z10 8Calculator.vho
+Z11 FCalculator.vho
+l0
+L37 1
+VA]mlIAc3Kj:WeRjT46I9Z3
+!s100 B?>`XFj@?DzzhFcFdefl>1
+Z12 OV;C;2020.1;71
+32
+!s110 1728989301
+!i10b 1
+Z13 !s108 1728989301.000000
+Z14 !s90 -work|work|Calculator.vho|
+Z15 !s107 Calculator.vho|
+!i113 1
+Z16 o-work work
+Z17 tExplicit 1 CvgOpt 0
+Astructure
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R9
+DEx4 work 10 calculator 0 22 A]mlIAc3Kj:WeRjT46I9Z3
+!i122 118
+l13237
+L53 195691
+V;I>6JUCE>o^D3m_XHn01d1
+!s100 J5kM8D02:4Eidi<3TjCnl2
+R12
+32
+!s110 1728989302
+!i10b 1
+R13
+R14
+R15
+!i113 1
+R16
+R17
+Ecalculator_vhd_vec_tst
+Z18 w1728989299
+R7
+R8
+!i122 119
+R0
+Z19 8Waveform.vwf.vht
+Z20 FWaveform.vwf.vht
+l0
+L32 1
+VJgE^^G]^94jUZ;gkRRj2m3
+!s100 `RZSAkgFGnF<Z1iiZ4N[d1
+R12
+32
+Z21 !s110 1728989304
+!i10b 1
+Z22 !s108 1728989304.000000
+Z23 !s90 -work|work|Waveform.vwf.vht|
+Z24 !s107 Waveform.vwf.vht|
+!i113 1
+R16
+R17
+Acalculator_arch
+R7
+R8
+Z25 DEx4 work 22 calculator_vhd_vec_tst 0 22 JgE^^G]^94jUZ;gkRRj2m3
+!i122 119
+l63
+L34 168
+VC5ObIFhROSH^<nDB^I3A<3
+!s100 k01Kah7j=ZYi9bjec]iJ>0
+R12
+32
+R21
+!i10b 1
+R22
+R23
+R24
+!i113 1
+R16
+R17
+Ehard_block
+Z26 w1728961990
+R4
+R2
+R6
+R7
+R8
+R3
+!i122 66
+R0
+R10
+R11
+l0
+L35 1
+Vhj[i;a0dD85B`o1JPT^cg2
+!s100 3A]XnMhF<;9mKUe5mn3aM1
+R12
+32
+Z27 !s110 1728961991
+!i10b 1
+Z28 !s108 1728961991.000000
+R14
+R15
+!i113 1
+R16
+R17
+Astructure
+R4
+R2
+R6
+R7
+R8
+R3
+DEx4 work 10 hard_block 0 22 hj[i;a0dD85B`o1JPT^cg2
+!i122 66
+l76
+L54 28
+Va5ClDYec`9chO`Ne0M1NL2
+!s100 >:Wi^nX[YiN=@>>JC6K_83
+R12
+32
+R27
+!i10b 1
+R28
+R14
+R15
+!i113 1
+R16
+R17
