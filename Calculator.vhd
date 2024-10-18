@@ -2,6 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
+library work;
+use work.statetype_package.all;
 
 entity Calculator is
   generic ( N : integer := 10);
@@ -19,9 +21,7 @@ end Calculator;
 
 architecture behave of Calculator is
 
-	 type statetype is (s0, s1, s2 ,s3 ,s4 ,s5 ,s6);
 	 signal state 					: statetype 				:=s0;
-	 signal state_int 			: integer range 0 to 6	:= 0;
 
 	 signal Data_A 				: std_logic_vector(N-1 downto 0)		:= (others => '0');
 	 signal Data_B 				: std_logic_vector(N-1 downto 0)		:= (others => '0');
@@ -93,7 +93,7 @@ begin
 					rst_i 		=> rst_i,
 					input_receive => input_receive,
 					Data_mode 	=> Data_mode,
-					state_int	=> state_int,
+					state	      => state,
 					result 		=> Data_result,
 					product 		=> Data_product,
 					quotient 	=> Data_quotient,
@@ -114,7 +114,7 @@ begin
 				 bcd   => BCD_data_digit_1,
 				 overflow => overflow,
 				 digit => 1,
-				 state_int => state_int,
+				 state => state,
 				 Data_mode => Data_mode,
 				 seven_seg  =>seven_seg_digit_1 );
 				 
@@ -124,7 +124,7 @@ begin
 				 bcd   => BCD_data_digit_2,
 				 overflow => overflow,
 				 digit => 2,
-				 state_int => state_int,
+				 state => state,
 				 Data_mode => Data_mode,
 				 seven_seg  =>seven_seg_digit_2 );
 				 
@@ -134,7 +134,7 @@ begin
 				 bcd   => BCD_data_digit_3,
 				 overflow => overflow,
 				 digit => 3,
-				 state_int => state_int,
+				 state => state,
 				 Data_mode => Data_mode,
 				 seven_seg  =>seven_seg_digit_3 );
 				 
@@ -144,7 +144,7 @@ begin
 				 bcd   => BCD_data_digit_4,
 				 overflow => overflow,
 				 digit => 4,
-				 state_int => state_int,
+				 state => state,
 				 Data_mode => Data_mode,
 				 seven_seg  =>seven_seg_digit_4 );
 				 
@@ -154,7 +154,7 @@ begin
 				 bcd   => BCD_data_digit_5,
 				 overflow => overflow,
 				 digit => 5,
-				 state_int => state_int,
+				 state => state,
 				 Data_mode => Data_mode,
 				 seven_seg  =>seven_seg_digit_5 );
 				 
@@ -164,7 +164,7 @@ begin
 				 bcd   => BCD_data_digit_6,
 				 overflow => overflow,
 				 digit => 6,
-				 state_int => state_int,
+				 state => state,
 				 Data_mode => Data_mode,
 				 seven_seg  =>seven_seg_digit_6 );
 				 
@@ -179,7 +179,6 @@ begin
 				start_prev <= '1';
 				done      <= '0';
 				state <= s0;
-				state_int <= 0;
 			
 		  elsif rising_edge(clk_i) then
 				case state is
@@ -187,14 +186,14 @@ begin
 				 when s0 =>
 					  if (start = '0') then											-- display as default
 							state <= s1;
-							state_int <= 1;
+
 					  end if;
 					
 				 when s1 =>
 					  if (start = '0' and start_prev = '1') then				-- store input A
 							Data_A <= input_switch;
 							state <= s2;
-							state_int <= 2;
+
 					  else
 							input_receive <= input_switch;
 					  end if;
@@ -202,14 +201,14 @@ begin
 					 when s2 =>
 					  if (start = '0' and start_prev = '1') then				-- display nothing
 							state <= s3;
-							state_int <= 3;
+
 					  end if;
 				  
 				 when s3 =>
 					  if (start = '0' and start_prev = '1') then				-- store input B
 							Data_B <= input_switch;
 							state <= s4;
-							state_int <= 4;
+
 					  else
 							input_receive <= input_switch;
 					  end if;
@@ -217,15 +216,15 @@ begin
 				 when s4 =>
 					  if (start = '0' and start_prev = '1') then				-- display nothing
 							state <= s5;
-							state_int <= 5;
+
 					  end if;	
 				  
 				 when s5 =>
 					  if (start = '0' and start_prev = '1') then				-- store operation
 							Data_mode <= input_switch(1 downto 0);
 							state <= s6;
-							state_int <= 6;
 							done      <= '1';
+							
 					  else
 							input_receive(1 downto 0) <= input_switch(1 downto 0);
 					  end if;
@@ -233,12 +232,12 @@ begin
 				 when s6 =>
 						if (rst_i ='0') then											-- display the result
 							state <= s0;
-							state_int <= 0;
+
 						end if;
 						
 				 when others =>
 						state <= s0;
-						state_int <= 0;
+
 						
 				end case;
 				

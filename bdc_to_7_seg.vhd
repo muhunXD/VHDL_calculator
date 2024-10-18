@@ -1,6 +1,8 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
+library work;
+use work.statetype_package.all;
 
 entity bdc_to_7_seg is
     port (
@@ -8,7 +10,7 @@ entity bdc_to_7_seg is
         bcd       : in std_logic_vector(3 downto 0);    -- binary code (input)
         overflow  : in std_logic := '0';                       -- overflow (input)
 		  digit		: in integer := 0;
-		  state_int : in integer := 0;
+		  state 		: in statetype := s0;
 		  Data_mode : in std_logic_vector (1 downto 0);
         seven_seg : out std_logic_vector(6 downto 0)    -- 7-segment decoded (output)
     );
@@ -20,23 +22,23 @@ begin
     process(clk_i)
         begin
             if (clk_i'event and clk_i = '1') then
-					case state_int is
-						when 0 =>
+					case state is
+						when s0 =>
 							case digit is
 								when 1 | 2 | 3 => seven_seg <= "0100011";
 								when 4 | 5 | 6 => seven_seg <= "0011100";
-								when others => seven_seg <= "0111000";                    -- display F
+								when others => seven_seg <= "0001110";                    -- display F
 							end case;
 							
-						when 2 | 4 =>
+						when s2 | s4 =>
 							seven_seg <= "1111111";
 							
-						when 5 =>
+						when s5 =>
 							if (digit = 6) then
 								case bcd is
 									when "0000" => seven_seg <= "1111111"; --7-segment display nothing
 									when "0001" => seven_seg <= "0111111"; --7-segment display number 1
-									when others => seven_seg <= "0000110"; --7-segment display E
+									when others => seven_seg <= "0001110";                    -- display F
 								end case;
 								
 							else
@@ -51,16 +53,16 @@ begin
 									when "0111" => seven_seg <= "1111000"; --7-segment display number 7
 									when "1000" => seven_seg <= "0000000"; --7-segment display number 8
 									when "1001" => seven_seg <= "0010000"; --7-segment display number 9
-									when others => seven_seg <= "0000110"; --7-segment display E
+									when others => seven_seg <= "0001110";                    -- display F
 								end case;
 							end if;
 							
-						when 1 | 3 => 
+						when s1 | s3 => 
 							if (digit = 6) then
 								case bcd is
 									when "0000" => seven_seg <= "1111111"; --7-segment display nothing
 									when "0001" => seven_seg <= "0111111"; --7-segment display number 1
-									when others => seven_seg <= "0000110"; --7-segment display E
+									when others => seven_seg <= "0001110"; --7-segment display F
 								end case;
 							else
 								case bcd is
@@ -74,13 +76,13 @@ begin
 									when "0111" => seven_seg <= "1111000"; --7-segment display number 7
 									when "1000" => seven_seg <= "0000000"; --7-segment display number 8
 									when "1001" => seven_seg <= "0010000"; --7-segment display number 9
-									when others => seven_seg <= "0000110"; --7-segment display E
+									when others => seven_seg <= "0001110";                    -- display F
 								end case;
 							end if;
 
-						when 6 =>
+						when s6 =>
 								if (overflow = '1') THEN                       -- overflow
-									  seven_seg <= "0111000";                    -- display F
+									  seven_seg <= "0001110";                    -- display F
 								else
 									case Data_mode is
 										when "11" | "01" | "10" =>
@@ -88,7 +90,7 @@ begin
 												case bcd is
 													when "0000" => seven_seg <= "1111111"; --7-segment display nothing
 													when "0001" => seven_seg <= "0111111"; --7-segment display number 1
-													when others => seven_seg <= "0000110"; --7-segment display E
+													when others => seven_seg <= "0001110";                    -- display F
 												end case;
 											else
 												  case bcd is
@@ -102,7 +104,7 @@ begin
 														when "0111" => seven_seg <= "1111000"; --7-segment display number 7
 														when "1000" => seven_seg <= "0000000"; --7-segment display number 8
 														when "1001" => seven_seg <= "0010000"; --7-segment display number 9
-														when others => seven_seg <= "0000110"; --7-segment display E
+														when others => seven_seg <= "0001110";                    -- display F
 												  end case;
 											end if;
 											
@@ -121,7 +123,7 @@ begin
 															when "0111" => seven_seg <= "1111000"; --7-segment display number 7
 															when "1000" => seven_seg <= "0000000"; --7-segment display number 8
 															when "1001" => seven_seg <= "0010000"; --7-segment display number 9
-															when others => seven_seg <= "0000110"; --7-segment display E
+															when others => seven_seg <= "0001110";                 -- display F
 													  end case;
 												when 6 =>
 													if (bcd = "0000") then
@@ -129,16 +131,16 @@ begin
 													elsif (bcd = "0001") then
 														seven_seg <= "0111111"; --7-segment display number 1
 													else
-														seven_seg <= "0000110"; --7-segment display E
+														seven_seg <= "0111000";      -- display F
 													end if;
-												when others => seven_seg <= "0000110"; --7-segment display E
+												when others => seven_seg <= "0001110";                    -- display F
 											end case;
 										
 										end case;
 									end if;
 						
 						when others =>
-							seven_seg <= "0111000";                    -- display F
+							seven_seg <= "0001110";                    -- display F
 							
 					end case;	
             end if;

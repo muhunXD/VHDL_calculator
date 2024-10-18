@@ -2,13 +2,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
+library work;
+use work.statetype_package.all;
 
 entity BCD_2_digit_7_seg_display is
     generic(N : integer := 10);                                      	-- genrate 10-bit binary
     port(
         clk_i                    : in std_logic;                     	-- system clock (input)
         rst_i                    : in std_logic;                     	-- button reset (input)
-		  state_int						: in integer := 0;							-- state status
+		  state						   : in statetype;							-- state status
 		  input_receive				: in std_logic_vector(N-1 downto 0);	-- input displayer
 		  Data_mode						: in std_logic_vector(1 downto 0);		-- operation
         result							: in STD_LOGIC_VECTOR(2*N-1 downto 0);	-- addition, subtraction's result
@@ -52,8 +54,8 @@ begin
             int_digit_6 <= 0;
 				
         elsif (clk_i'event and clk_i = '1') then
-				case state_int is
-					when 1 | 3 =>
+				case state is
+					when s1 | s3 =>
 						if (input_receive(N-1) = '0') then                                       -- non-negative data
 							 int_digit_1 <= conv_integer(unsigned(input_receive)) mod 10;       	
 							 int_digit_2 <= (conv_integer(unsigned(input_receive)) / 10) mod 10 ;  
@@ -73,7 +75,7 @@ begin
 						int_digit_6 <= conv_integer(unsigned(signed_bit));                        -- signed digit 6
 								
 					
-					when 5 =>
+					when s5 =>
 						data_mode_bit_0(0) <= input_receive(0);
 						data_mode_bit_1(0) <= input_receive(1);
 						int_digit_1 <= conv_integer(unsigned(data_mode_bit_0));
@@ -83,7 +85,7 @@ begin
 						int_digit_5 <= 0;
 						int_digit_6 <= 0;
 						
-					when 6 =>
+					when s6 =>
 						
 						case Data_mode is
 							when "11" | "10" =>
