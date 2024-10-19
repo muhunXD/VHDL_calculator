@@ -87,7 +87,7 @@ begin
 					Remainder	=> Data_remainder
 				);
 				
-	 convert_binary_result:entity work.BCD_2_digit_7_seg_display(Behavioral)
+	 convert_binary_result:entity work.BCD_6_digit_7_seg_display(Behavioral)
 				port map(
 					clk_i 		=> clk_i,
 					rst_i 		=> rst_i,

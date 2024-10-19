@@ -16,7 +16,7 @@ end entity full_add_sub;
 
 architecture Behave of full_add_sub is
 
-    signal carry : std_logic_vector(2*N downto 0);        -- 6-bit carry
+    signal carry : std_logic_vector(2*N downto 0);        -- 21-bit carry
     signal b_control : std_logic_vector(2*N-1 downto 0);  -- controlled b indicate add/sub
 	 signal control : std_logic := '1';
 	 signal Data_A, Data_B : std_logic_vector(2*N-1 downto 0);

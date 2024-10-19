@@ -92,14 +92,6 @@ begin
 						
 					else
 						-- result
-												 -- last bit check (negative product)
---						if (A(N-1) = '1' xor B(N-1) = '1') then -- only one negative
---							R <= not(Data_Product) + 1;
---						else
---							R <= Data_Product;
---						end if;
-
-						-- result
 						R <= Data_Product;
 						bit_counter <= 0;
 						Data_Product <= (others => '0');

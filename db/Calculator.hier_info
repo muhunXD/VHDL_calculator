@@ -48,7 +48,7 @@ clk_i => Data_A[8].CLK
 clk_i => Data_A[9].CLK
 clk_i => multiplication:multiplication_component.clk_i
 clk_i => division:division_component.clk_i
-clk_i => bcd_2_digit_7_seg_display:convert_binary_result.clk_i
+clk_i => bcd_6_digit_7_seg_display:convert_binary_result.clk_i
 clk_i => bdc_to_7_seg:seven_seg_display_1.clk_i
 clk_i => bdc_to_7_seg:seven_seg_display_2.clk_i
 clk_i => bdc_to_7_seg:seven_seg_display_3.clk_i
@@ -59,7 +59,7 @@ clk_i => state~8.DATAIN
 rst_i => signed_bit_checker:signed_bit_check.rst_i
 rst_i => multiplication:multiplication_component.rst_i
 rst_i => division:division_component.rst_i
-rst_i => bcd_2_digit_7_seg_display:convert_binary_result.rst_i
+rst_i => bcd_6_digit_7_seg_display:convert_binary_result.rst_i
 rst_i => done.ACLR
 rst_i => start_prev.PRESET
 rst_i => Data_B[0].ACLR
@@ -1460,7 +1460,7 @@ Data_Q_Status[8] <= Data_Q_Status[8]~reg0.DB_MAX_OUTPUT_PORT_TYPE
 Data_Q_Status[9] <= Data_Q_Status[9]~reg0.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|Calculator|BCD_2_digit_7_seg_display:convert_binary_result
+|Calculator|BCD_6_digit_7_seg_display:convert_binary_result
 clk_i => product_2_com[0].CLK
 clk_i => product_2_com[1].CLK
 clk_i => product_2_com[2].CLK
