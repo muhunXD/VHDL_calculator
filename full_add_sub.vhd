@@ -3,14 +3,12 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity full_add_sub is
-    generic(N : integer := 10);                         -- generate 5-bit binary
+    generic(N : integer := 10);                         -- generate 10-bit binary
     port (
-        a_i      : in std_logic_vector(N-1 downto 0);   -- a 5-bit binary (input)
-        b_i      : in std_logic_vector(N-1 downto 0);   -- b 5-bit binary (input)
+        a_i      : in std_logic_vector(N-1 downto 0);   -- a 10-bit binary (input)
+        b_i      : in std_logic_vector(N-1 downto 0);   -- b 10-bit binary (input)
         Data_mode: in std_logic_vector(1 downto 0);     -- adder/subtractor controller (input)
-        result   : out std_logic_vector(2*N-1 downto 0);-- 5-bit binary (output)
-		  signed_bit: out std_logic := '0';
-        overflow : out std_logic                        -- overflow (output)
+        result   : out std_logic_vector(2*N-1 downto 0)-- 5-bit binary (output)
     );
 end entity full_add_sub;
 
@@ -18,7 +16,7 @@ architecture Behave of full_add_sub is
 
     signal carry : std_logic_vector(2*N downto 0);        -- 21-bit carry
     signal b_control : std_logic_vector(2*N-1 downto 0);  -- controlled b indicate add/sub
-	 signal control : std_logic := '1';
+	 signal control : std_logic;
 	 signal Data_A, Data_B : std_logic_vector(2*N-1 downto 0);
 
 begin
@@ -49,7 +47,5 @@ begin
                 c_out => carry(i+1)
             );
     end generate;
-				
-	 overflow <= carry(N) xor carry(N-1);
 
 end architecture Behave;

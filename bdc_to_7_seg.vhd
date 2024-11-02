@@ -8,10 +8,10 @@ entity bdc_to_7_seg is
     port (
         clk_i     : in std_logic;                       -- system clock (input)
         bcd       : in std_logic_vector(3 downto 0);    -- binary code (input)
-        overflow  : in std_logic := '0';                       -- overflow (input)
-		  digit		: in integer := 0;
-		  state 		: in statetype := s0;
-		  Data_mode : in std_logic_vector (1 downto 0);
+        overflow  : in std_logic := '0';                -- overflow (input)
+		  digit		: in integer := 0;						  -- digit 1-6
+		  state 		: in statetype := s0;					  -- state status
+		  Data_mode : in std_logic_vector (1 downto 0);	  -- operation
         seven_seg : out std_logic_vector(6 downto 0)    -- 7-segment decoded (output)
     );
 end entity bdc_to_7_seg;
@@ -23,25 +23,18 @@ begin
         begin
             if (clk_i'event and clk_i = '1') then
 					case state is
-						when s0 =>
+						when s0 =>						-- default
 							case digit is
 								when 1 | 2 | 3 => seven_seg <= "0100011";
 								when 4 | 5 | 6 => seven_seg <= "0011100";
 								when others => seven_seg <= "0001110";                    -- display F
 							end case;
 							
-						when s2 | s4 =>
+						when s2 | s4 =>				-- display nothing
 							seven_seg <= "1111111";
 							
-						when s5 =>
-							if (digit = 6) then
-								case bcd is
-									when "0000" => seven_seg <= "1111111"; --7-segment display nothing
-									when "0001" => seven_seg <= "0111111"; --7-segment display number 1
-									when others => seven_seg <= "0001110";                    -- display F
-								end case;
-								
-							else
+						when s5 =>						-- oeration mode
+							if digit = 2 or digit = 1 then
 								case bcd is
 									when "0000" => seven_seg <= "1000000"; --7-segment display number 0
 									when "0001" => seven_seg <= "1111001"; --7-segment display number 1
@@ -55,9 +48,13 @@ begin
 									when "1001" => seven_seg <= "0010000"; --7-segment display number 9
 									when others => seven_seg <= "0001110";                    -- display F
 								end case;
+								
+							else
+								seven_seg <= "1111111"; -- 7 segment displays notihng
+								
 							end if;
 							
-						when s1 | s3 => 
+						when s1 | s3 => 				-- input A and B
 							if (digit = 6) then
 								case bcd is
 									when "0000" => seven_seg <= "1111111"; --7-segment display nothing
@@ -80,12 +77,12 @@ begin
 								end case;
 							end if;
 
-						when s6 =>
+						when s6 =>					-- display
 								if (overflow = '1') THEN                       -- overflow
 									  seven_seg <= "0001110";                    -- display F
 								else
 									case Data_mode is
-										when "11" | "01" | "10" =>
+										when "11" | "01" | "10" =>				-- addition / subtraction / multiplication
 											if (digit = 6) then
 												case bcd is
 													when "0000" => seven_seg <= "1111111"; --7-segment display nothing
@@ -108,7 +105,7 @@ begin
 												  end case;
 											end if;
 											
-										when "00" =>
+										when "00" =>								-- division
 											case digit is
 												when 3 => seven_seg <= "0110110"; --7-segment display =
 												when 1 | 2| 4 | 5 =>

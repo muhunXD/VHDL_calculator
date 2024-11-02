@@ -1,53 +1,51 @@
-library ieee;
+library ieee, work;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.std_logic_unsigned.all;
-library work;
 use work.statetype_package.all;
 
 entity Calculator is
-  generic ( N : integer := 10);
+  generic ( N : integer := 10);																			-- 10-bit
   port(
-    start, clk_i ,rst_i          			: in std_logic;
-    input_switch            					: in std_logic_vector(N-1 downto 0);
+    start, clk_i ,rst_i          			: in std_logic;										-- start, clock 50 Hz, reset
+    input_switch            					: in std_logic_vector(N-1 downto 0);			-- 10 switch input
 
     seven_seg_digit_1, seven_seg_digit_2,
     seven_seg_digit_3, seven_seg_digit_4,
-    seven_seg_digit_5, seven_seg_digit_6 	: out STD_LOGIC_VECTOR (6 downto 0);
-    led_done           							: out std_logic := '0'
+    seven_seg_digit_5, seven_seg_digit_6 	: out STD_LOGIC_VECTOR (6 downto 0);			-- 7-segment displayer 6 digit
+    led_done           							: out std_logic := '0'								-- led done
     );
 
 end Calculator;
 
 architecture behave of Calculator is
 
-	 signal state 					: statetype 				:=s0;
+	 signal state 					: statetype 								:= s0;
 
-	 signal Data_A 				: std_logic_vector(N-1 downto 0)		:= (others => '0');
-	 signal Data_B 				: std_logic_vector(N-1 downto 0)		:= (others => '0');
-	 signal Data_mode 			: std_logic_vector(1 downto 0) 		:= (others => '0');
-	 signal input_receive      : std_logic_vector(N-1 downto 0)    := (others => '0');
+	 signal Data_A 				: std_logic_vector(N-1 downto 0)		:= (others => '0');	-- Data A
+	 signal Data_B 				: std_logic_vector(N-1 downto 0)		:= (others => '0');	-- Data B
+	 signal Data_mode 			: std_logic_vector(1 downto 0) 		:= (others => '0');	-- operation
+	 signal input_receive      : std_logic_vector(N-1 downto 0)    := (others => '0');	-- stor input at the moment
 	 
-	 signal Data_result 			: std_logic_vector(2*N-1 downto 0) 	:= (others =>'0');
-	 signal overflow 				: std_logic									:= '0';
-	 signal Data_product 		: std_logic_vector(2*N-1 downto 0)  := (others => '0');
-	 signal Data_divisor 		: std_logic_vector(2*N-1 downto 0) 	:= (others => '0');
-	 signal Data_remainder 		: std_logic_vector(2*N-1 downto 0) 	:= (others => '0');
-	 signal Data_quotient 		: std_logic_vector(N-1 downto 0) 	:= (others => '0');
-	 signal done  					: std_logic 								:= '0';
-	 signal signed_bit			: std_logic									:= '0';
-	 signal start_prev			: std_logic									:= '1';	
+	 signal Data_result,
+			  Data_product,
+			  Data_divisor,
+			  Data_remainder		: std_logic_vector(2*N-1 downto 0) 	:= (others =>'0');	
+	 signal Data_quotient 		: std_logic_vector(N-1 downto 0) 	:= (others => '0');  --  result
+	 
+	 signal overflow 				: std_logic									:= '0';					--	overflow	 
+	 signal done  					: std_logic 								:= '0';					-- signal done
+	 signal signed_bit			: std_logic									:= '0';					-- signed bit detector
+	 signal start_prev			: std_logic									:= '1';					-- edge detector
 	 
 	 signal BCD_data_digit_1 : STD_LOGIC_VECTOR (3 downto 0);
 	 signal BCD_data_digit_2 : STD_LOGIC_VECTOR (3 downto 0);
 	 signal BCD_data_digit_3 : STD_LOGIC_VECTOR (3 downto 0);
 	 signal BCD_data_digit_4 : STD_LOGIC_VECTOR (3 downto 0);
 	 signal BCD_data_digit_5 : STD_LOGIC_VECTOR (3 downto 0);
-	 signal BCD_data_digit_6 : STD_LOGIC_VECTOR (3 downto 0);
+	 signal BCD_data_digit_6 : STD_LOGIC_VECTOR (3 downto 0);									-- 4-bit binary
   
 begin
 
-	 signed_bit_check:entity work.signed_bit_checker(Behave)
+	 signed_bit_check:entity work.signed_bit_detector(Behave)
 				port map(
 					clk_i => clk_i,
 					rst_i => rst_i,
@@ -98,7 +96,7 @@ begin
 					product 		=> Data_product,
 					quotient 	=> Data_quotient,
 					remainder 	=> Data_remainder,
-					signed_bit_check  => signed_bit,
+					signed_bit_detect  => signed_bit,
 					overflow		=> overflow,
 					BCD_digit_1 => BCD_data_digit_1,
 					BCD_digit_2 => BCD_data_digit_2,

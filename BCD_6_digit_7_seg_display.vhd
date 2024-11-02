@@ -1,8 +1,7 @@
-library ieee;
+library ieee, work;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
-library work;
 use work.statetype_package.all;
 
 entity BCD_6_digit_7_seg_display is
@@ -10,14 +9,14 @@ entity BCD_6_digit_7_seg_display is
     port(
         clk_i                    : in std_logic;                     	-- system clock (input)
         rst_i                    : in std_logic;                     	-- button reset (input)
-		  state						   : in statetype;							-- state status
+		  state						   : in statetype;								-- state status
 		  input_receive				: in std_logic_vector(N-1 downto 0);	-- input displayer
 		  Data_mode						: in std_logic_vector(1 downto 0);		-- operation
         result							: in STD_LOGIC_VECTOR(2*N-1 downto 0);	-- addition, subtraction's result
 		  product						: in STD_LOGIC_VECTOR(2*N-1 downto 0);	-- multiplication's result
 		  quotient						: in STD_LOGIC_VECTOR(N-1 downto 0);	-- division's result
 		  remainder						: in STD_LOGIC_VECTOR(2*N-1 downto 0);	-- division's remainder
-		  signed_bit_check			: in std_logic;								-- signed bit
+		  signed_bit_detect			: in std_logic;								-- signed bit
 		  overflow						: out std_logic := '0';						-- out of range 7-segment displayer
         bcd_digit_1, bcd_digit_2,
 		  bcd_digit_3, bcd_digit_4,
@@ -46,16 +45,17 @@ begin
     process(clk_i, rst_i)
     begin
         if (rst_i = '0') then                   -- on reset
-            int_digit_1 <= 0;
-            int_digit_2 <= 0;
-				int_digit_3 <= 0;
-				int_digit_4 <= 0;
-				int_digit_5 <= 0;
-            int_digit_6 <= 0;
+            int_digit_1 			<= 0;
+            int_digit_2 			<= 0;
+				int_digit_3 			<= 0;
+				int_digit_4 			<= 0;
+				int_digit_5 			<= 0;
+            int_digit_6 			<= 0;
+				int_digit_6_overflow	<= 0;
 				
         elsif (clk_i'event and clk_i = '1') then
 				case state is
-					when s1 | s3 =>
+					when s1 | s3 =>	-- input A and B
 						if (input_receive(N-1) = '0') then                                       -- non-negative data
 							 int_digit_1 <= conv_integer(unsigned(input_receive)) mod 10;       	
 							 int_digit_2 <= (conv_integer(unsigned(input_receive)) / 10) mod 10 ;  
@@ -71,11 +71,12 @@ begin
 							 int_digit_4 <= (conv_integer(unsigned(input_receive_2_com)) / 1000)mod 10;
 							 int_digit_5 <= (conv_integer(unsigned(input_receive_2_com)) / 10000);
 						end if;
+						
 						signed_bit(0) <= input_receive(N-1);
 						int_digit_6 <= conv_integer(unsigned(signed_bit));                        -- signed digit 6
 								
 					
-					when s5 =>
+					when s5 =>		-- input operation
 						data_mode_bit_0(0) <= input_receive(0);
 						data_mode_bit_1(0) <= input_receive(1);
 						int_digit_1 <= conv_integer(unsigned(data_mode_bit_0));
@@ -85,10 +86,10 @@ begin
 						int_digit_5 <= 0;
 						int_digit_6 <= 0;
 						
-					when s6 =>
+					when s6 =>		-- display
 						
 						case Data_mode is
-							when "11" | "10" =>
+							when "11" | "10" =>	-- addition / subtraction
 								if (result(2*N-1) = '0') then                                        -- non-negative data
 									 int_digit_1 <= conv_integer(unsigned(result)) mod 10;       		 
 									 int_digit_2 <= (conv_integer(unsigned(result)) / 10) mod 10 ; 
@@ -106,11 +107,11 @@ begin
 
 								end if;
 								
-								signed_bit(0) <= signed_bit_check;
+								signed_bit(0) <= signed_bit_detect;
 								int_digit_6 <= conv_integer(unsigned(signed_bit));        -- signed digit 6
 								
 						
-							when "01" =>
+							when "01" =>			-- multiplication
 								if (product(2*N-1) = '0') then                              -- non-negative data
 									 int_digit_1 <= conv_integer(unsigned(product)) mod 10;       		 
 									 int_digit_2 <= (conv_integer(unsigned(product)) / 10) mod 10 ;  
@@ -130,11 +131,11 @@ begin
 
 								end if;
 								
-								signed_bit(0) <= signed_bit_check;
+								signed_bit(0) <= signed_bit_detect;
 								int_digit_6 <= conv_integer(unsigned(signed_bit));         		-- signed digit 6
 								
-							when "00" =>
-								 signed_bit(0) <= signed_bit_check;
+							when "00" =>			-- division
+								 signed_bit(0) <= signed_bit_detect;
 								 int_digit_1 <= conv_integer(unsigned(remainder))mod 10;
 								 int_digit_2 <= (conv_integer(unsigned(remainder))/ 10) mod 10;
 								 int_digit_4 <= conv_integer(unsigned(quotient))mod 10;
